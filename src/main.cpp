@@ -10,6 +10,7 @@ const char* password = "50A5DC7C356B";
 
 const char* api_key = "Norman#3543";
 const char* api_url = "https://ecse-three-led-api.onrender.com/api/state";
+
 // Define the pins for the LEDs
 
 const int led1_pin = 12;
