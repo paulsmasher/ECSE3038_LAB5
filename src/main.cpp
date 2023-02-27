@@ -4,7 +4,7 @@
 #include<Arduino.h>
 #include  "env.h"
 
-const char* serverName = "ecse-three-led-api.onrender.com";
+const char* Paul_Connect = "ecse-three-led-api.onrender.com";
 const char* ssid = "ARRIS-356B";
 const char* password = "50A5DC7C356B";
 
