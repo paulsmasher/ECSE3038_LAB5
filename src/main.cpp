@@ -23,14 +23,15 @@ void setup() {
   pinMode(led2_pin, OUTPUT);
   pinMode(led3_pin, OUTPUT);
 
-  WiFi.begin(ssid, password);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
   Serial.print("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.print(".");
   }
-  Serial.println();
+  Serial.println("");
   Serial.println("WiFi connected");
+  Serial.println(WiFi.localIP());
 
 }
 
