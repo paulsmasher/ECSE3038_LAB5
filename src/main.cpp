@@ -5,17 +5,12 @@
 #include  "env.h"
 
 const char* serverName = "ecse-three-led-api.onrender.com";
-
-// Define the pins for the LEDs
-const int led1Pin = 12;
-const int led2Pin = 13;
-const int led3Pin = 14;
-
 const char* ssid = "ARRIS-356B";
 const char* password = "50A5DC7C356B";
 
 const char* api_key = "Norman#3543";
 const char* api_url = "https://ecse-three-led-api.onrender.com/api/state";
+// Define the pins for the LEDs
 
 const int led1_pin = 12;
 const int led2_pin = 14;
