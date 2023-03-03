@@ -4,12 +4,6 @@
 #include<Arduino.h>
 #include  "env.h"
 
-const char* Paul_Connect = "ecse-three-led-api.onrender.com";
-const char* ssid = "ARRIS-356B";
-const char* password = "50A5DC7C356B";
-
-const char* api_key = "Norman#3543";
-const char* api_url = "https://ecse-three-led-api.onrender.com/api/state";
 
 // Define the pins for the LEDs
 
@@ -17,13 +11,24 @@ const int led1_pin = 12;
 const int led2_pin = 14;
 const int led3_pin = 27;
 
+bool states[8][3] = {
+  {false, false, false},
+  {false, false, true},
+  {false, true, false},
+  {false, true, true},
+  {true, false, false},
+  {true, false, true},
+  {true, true, false},
+  {true, true, true}
+};
+
 void setup() {
   Serial.begin(9600);
   pinMode(led1_pin, OUTPUT);
   pinMode(led2_pin, OUTPUT);
   pinMode(led3_pin, OUTPUT);
 
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
@@ -36,32 +41,31 @@ void setup() {
 }
 
 void loop() {
-  HTTPClient http;
-  http.begin(api_url);
-  http.addHeader("X-API-Key", api_key);
+  // Define the JSON payload
+  DynamicJsonDocument payload(200);
 
-  int httpCode = http.GET();
-  if (httpCode == HTTP_CODE_OK) {
-    String response = http.getString();
-    Serial.println(response);
+  for (int i = 0; i < 8; i++) {
+    payload["light_switch_1"] = states[i][0];
+    payload["light_switch_2"] = states[i][1];
+    payload["light_switch_3"] = states[i][2];
 
-    StaticJsonDocument<200> doc;
-    DeserializationError error = deserializeJson(doc, response);
-    if (error) {
-      Serial.print(F("deserializeJson() failed: "));
-      Serial.println(error.c_str());
+    // Serialize the payload
+    String payload_str;
+    serializeJson(payload, payload_str);
+
+    HTTPClient http;
+    http.begin(api_url);
+    http.addHeader("X-API-Key", api_key);
+    http.addHeader("Content-Type", "application/json");
+
+    int httpCode = http.PUT(payload_str);
+    if (httpCode == HTTP_CODE_OK) {
+      Serial.println("Request successful");
     } else {
-      bool led1_state = doc["led1"];
-      bool led2_state = doc["led2"];
-      bool led3_state = doc["led3"];
-      digitalWrite(led1_pin, led1_state ? HIGH : LOW);
-      digitalWrite(led2_pin, led2_state ? HIGH : LOW);
-      digitalWrite(led3_pin, led3_state ? HIGH : LOW);
+      Serial.println("HTTP request failed");
     }
-  } else {
-    Serial.println("HTTP request failed");
-  }
 
-  http.end();
-  delay(1000);
+    http.end();
+    delay(2000);
+  }
 }
