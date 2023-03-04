@@ -3,6 +3,7 @@
 #include <ArduinoJson.h>
 #include<Arduino.h>
 #include  "env.h"
+#include  "secrets.h"
 
 
 // Define the pins for the LEDs
@@ -19,7 +20,7 @@ bool states[8][3] = {
   {true, false, false},
   {true, false, true},
   {true, true, false},
-  {true, true, true}
+  {false, false, false }
 };
 
 void setup() {
