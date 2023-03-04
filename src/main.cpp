@@ -7,7 +7,6 @@
 
 
 // Define the pins for the LEDs
-
 const int led1_pin = 12;
 const int led2_pin = 14;
 const int led3_pin = 27;
